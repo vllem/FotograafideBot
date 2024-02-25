@@ -32,4 +32,4 @@ Selle projekti järgmine plaan on luua twitter ja facebook bot, mis saadab päev
 
 # Miks twitter ja facebook bot?
 Tahame luua twitteri ja facebooki boti, et tutvustada fotograafide loomingut. 
-Mina (@vllem), projekti algataja, olen väga suur Endel Veliste ja teiste fotograafide fänn ning soovin nende loomingut rohkem tutvustada.  
+Mina @vllem, projekti algataja, olen väga suur Endel Veliste ja teiste fotograafide fänn ning soovin nende loomingut rohkem tutvustada.  
