@@ -74,7 +74,7 @@ async def fetch_with_backoff(client, url):
     return response
 
 def save_to_parquet(data_tuples):
-    filename = f"photo_details_v1.parquet"
+    filename = f"photo_details.parquet"
     new_df = pd.DataFrame(data_tuples, columns=["Foto Kirjeldus", "Asukoht", "Kuupäev", "Fotograaf", "EFA_ID", "ImageHref", "PageNr"])
     if old_df is not None:
         df = pd.concat([old_df, new_df])
@@ -151,7 +151,7 @@ async def main():
 
             # add page nr to queue, filter out already existing
             try:
-                old_df = pd.read_parquet("photo_details_v1.parquet", engine="pyarrow")
+                old_df = pd.read_parquet("photo_details.parquet", engine="pyarrow")
                 unique_page_numbers = old_df["PageNr"].unique().tolist()
             except FileNotFoundError:
                 old_df = None
