@@ -1,31 +1,5 @@
 # FotograafideBot
-Selle projekti peamine osa on pythoni kood millega saab pärida Rahvusarhiivi fotoinfosüsteemist fotosid.
-See loob teile .parquet formaadis andmebaasi piltide URL osadest järgmistelt fotograafidelt:
-
-- Endel Veliste
-- Gunnar Vaidla
-- Voldemar Maask
-- Gunnar Loss
-- Dmitri Prants
-- Ilmar Prooso
-- Isi Trapido
-- Jaan Riet
-- Benita Labi
-- Theodor John
-- Parikas
-- Feodor Olop
-- Rein Zobel
-- E. Norman
-- Kaljo Raud
-- Georgi Tsvetkov
-- Oskar Vihandi
-- V. Gorbunov
-- O. Koska
-- Vatser, Ü.
-- Samussenko, V.
-- Pavel Kuznetsov
-- Viktor Rudko
-- K. Liiv
+Selle projekti peamine osa on pythoni kood millega saab pärida kõiki Rahvusarhiivi fotoinfosüsteemist olevaid fotosid.
 
 # Plaanid selle projektiga
 Selle projekti järgmine plaan on luua twitter ja facebook bot, mis saadab päevas mitu korda postitada suvalisi pilte nendelt fotograafidelt (viidetega muidugi).
