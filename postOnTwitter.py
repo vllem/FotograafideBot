@@ -66,12 +66,6 @@ async def main():
     async with httpx.AsyncClient() as session:
         for href in imgrefs:
             await get_img(session, href)
-        
-
-
-
-    
-    
 
 if __name__ == "__main__":
     asyncio.run(main())
