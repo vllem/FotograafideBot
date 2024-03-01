@@ -6,10 +6,10 @@ import pandas as pd
 import logging
 import logging.config
 import traceback
+import re
 
 LOGGING_CONFIG = {
     "version": 1,
-
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
@@ -46,15 +46,6 @@ LOGGING_CONFIG = {
 
 logging.config.dictConfig(LOGGING_CONFIG)
 
-#console = logging.StreamHandler()
-#console.setLevel(logging.DEBUG)
-#formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
-#console.setFormatter(formatter)
-#logging.getLogger('').addHandler(console)
-
-pageCount = 36850
-#pageCount = 32
-
 async def on_backoff(details):
     logging.warning(f"Backing off {details['wait']:0.1f} seconds after {details['tries']} tries calling function {details['target'].__name__} with args {details['args']} and kwargs {details['kwargs']}")
 
@@ -63,14 +54,14 @@ async def on_giveup(details):
 
 @backoff.on_exception(backoff.expo,
                       (httpx.ConnectTimeout, httpx.ReadTimeout),
-                      max_tries=5,
+                      max_tries=100,
                       on_backoff=on_backoff,
                       on_giveup=on_giveup,
                       giveup=lambda e: not isinstance(e, (httpx.ConnectTimeout, httpx.ReadTimeout)),
                       jitter=backoff.full_jitter)
 
 async def fetch_with_backoff(client, url):
-    response = await client.get(url, timeout=(10.0, 30.0))
+    response = await client.get(url, timeout=(30.0, 60.0))
     return response
 
 def save_to_parquet(data_tuples):
@@ -83,6 +74,22 @@ def save_to_parquet(data_tuples):
         
     df.to_parquet(filename, compression='snappy', index=False)
     logging.info(f"Saved to {filename}.")
+
+try:
+    getPageCountURL = "https://www.ra.ee/fotis/index.php/et/photo/search?page=1"
+    getPageCountResponse = httpx.get(getPageCountURL)
+    getPageCountSoup = BeautifulSoup(getPageCountResponse.content, "lxml")
+    li_last = getPageCountSoup.find('li', class_='last')
+    pageCount = 36850
+    if li_last:
+        a_tag = li_last.find('a')
+        if a_tag and 'href' in a_tag.attrs:
+            href = a_tag['href']
+            match = re.search(r'page=(\d+)', href)
+            if match:
+                pageCount = int(match.group(1))
+except httpx.ReadTimeout:
+    print("The request timed out while waiting for a response.")
 
 async def fetch_page(session, nr):
     page_data = list()
@@ -142,7 +149,7 @@ async def main():
     tasks = []
     all_data = []
     globalCount = 0
-    workerCount = 10
+    workerCount = 15
     unique_page_numbers = []
 
     try:
