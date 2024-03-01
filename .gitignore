@@ -1,6 +1,6 @@
 venv/
 *.log
-*.parquet
+#*.parquet
 creds.json
 cookies.json
 imgs/
